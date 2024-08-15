@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Registration</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100px;
+      margin: 0;
+      background-color: #93bae4;
+    }
+
+    .registration-form {
+      background-color: #fff;
+      border: 3px solid #3498db;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 50px;
+      width: 400px;
+    }
+
+    .registration-form label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .registration-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #3498db;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .registration-form button {
+      padding: 15px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+    }
+
+    .registration-form button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Check if the user is authenticated
+  var isLoggedIn = sessionStorage.getItem('isLoggedIn');
+
+  if (!isLoggedIn) {
+    // If not authenticated, redirect to the main page
+    // window.location.replace('logindoctor.html');
+  }
+});</script>
+<body>
+
+  <div class="registration-form">
+    <h2>Doctor Registration</h2>
+    <form id="doctorRegistrationForm" method="post" action="doctor_registration.php"  enctype="multipart/form-data">
+      <label for="drName">Doctor Name:</label>
+      <input type="text" id="drName" name="drName" placeholder="ex:John Doe" required>
+      
+      <label for="drProfile">Upload Profile Image: (JPG, JPEG, or PNG file)</label>
+      <input type="file" id="drProfile" name="drProfile" >
+
+      <label for="drMajor">Doctor Major:</label>
+      <select id="diseaseDropdown" name="major" required>
+        <option value="" disabled selected>Choose Your Major</option>
+        <option value="Heart Disease">Heart Diseases</option>
+        <option value="Orthopedic">Orthopedic Doctor</option>
+        <option value="Dentist">Dentist </option>
+        <option value="Respiratory"> Respiratory Diseases </option>
+        <option value="Dermatology">Dermatology </option>
+        <option value="Ear,Nose and Throat Doctor"> Ear,Nose and Throat Doctor</option>
+        <option value="General Medicine">General Medicine </option>
+        <option value="Psychiatry">Psychiatry</option>
+      </select>
+
+      <label for="drPhone">Phone Number:</label>
+      <input type="tel" id="drPhone" name="drPhone" placeholder="ex:03 123456" required>
+
+      <label for="drLocation">Location:</label>
+      <input type="text" id="drLocation" name="drLocation" placeholder="ex:https://maps.app.goo.gl/ydBmpwVRqgqvYmfTA" required>
+
+      <label for="drregion">Region:</label>
+      <select id="regionDropdown" name="region" required>
+        <option value=""  selected> Choose Your Region</option>
+        <option value="Bekaa">Bekaa</option>
+        <option value="Beirut">Beirut</option>
+        <option value="South">South</option>
+      </select>
+        <div></div>
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+</body>
+</html>

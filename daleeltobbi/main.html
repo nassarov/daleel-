@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="main.css">
+  <title>Daleel طبي</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="top-bar" id="topBar">
+    <button onclick="Signup()">SignUp</button>
+    <button onclick="clientLogin()">Client Login</button>
+    <button onclick="doctorlogin()">Doctor Login</button>
+  </div>
+
+  <div>  
+    <input type="text" id="doctorSearch" placeholder="Search by Doctor Name" oninput="searchDoctorsByName()">
+  </div>
+
+  <form id="searchForm" method="post">
+    <div class="container">
+      <div class="search-dropdown">
+        <span class="icon">🩺</span>
+        <select id="diseaseDropdown" name="disease">
+          <option value="" selected>What Are You Looking For</option>
+          <option value="Heart Disease">Heart Diseases</option>
+          <option value="Orthopedic">Orthopedic Doctor</option>
+          <option value="Dentist">Dentist </option>
+          <option value="Respiratory"> Respiratory Diseases </option>
+          <option value="Dermatology">Dermatology </option>
+          <option value="Ear,Nose and Throat Doctor"> Ear,Nose and Throat Doctor</option>
+          <option value="General Medicine">General Medicine </option>
+          <option value="Psychiatry">Psychiatry</option>
+        </select>
+      </div>
+
+      <div class="location-dropdown">
+        <select id="regionDropdown" name="region">
+          <option value="" selected> Choose Your Region</option>
+          <option value="Bekaa">Bekaa</option>
+          <option value="Beirut">Beirut</option>
+          <option value="South">South</option>
+        </select>
+      </div>
+
+      <div class="search-button">
+        <button type="submit" onclick="searchDoctors()">Search For Doctors 🔍</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Displayed Doctors -->
+  <div id="doctorsContainer" class="doctor-list-container">
+    <!-- Doctors will be displayed here -->
+  </div>
+
+  <!-- View More Button -->
+  <button id="viewMoreBtn" onclick="viewMore()">View More</button>
+  
+
+  <script>
+          
+
+    var displayedDoctorsCount = 3; // Initial number of doctors to display
+    var totalDoctorsCount = 0; // Total number of doctors (initialize it as needed)
+    document.getElementById('searchForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      searchDoctors();
+    });
+
+    function searchDoctors() {
+      var disease = document.querySelector('#diseaseDropdown').value;
+      var region = document.querySelector('#regionDropdown').value;
+
+      // Fetch API to send the selected disease and region to the server
+      fetch('search.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'disease=' + disease + '&region=' + region,
+      })
+      .then(response => response.text())
+      .then(data => {
+        
+        // Update the doctor list container with the response from the server
+        document.getElementById('doctorsContainer').innerHTML = data;
+        if (totalDoctorsCount > displayedDoctorsCount && isLoggedIn) {
+      document.getElementById('viewMoreBtn').style.display = 'block';
+      
+    } 
+    var doctors = document.querySelectorAll('.doctor-box');
+    for (var i = 0; i < doctors.length; i++) {
+      if (i < displayedDoctorsCount) {
+        doctors[i].style.display = 'flex';
+      } else {
+        doctors[i].style.display = 'none';
+      }
+    }
+      
+      })
+      .catch(error => console.error('Error:', error));
+    }
+
+    function viewMore() {
+      // Check if the user is logged in (you can replace this with your actual login check logic)
+      var isLoggedIn = false; // Replace this with your actual login check logic
+
+      if (isLoggedIn) {
+        // Increase the displayed count by a certain number (e.g., 3)
+        displayedDoctorsCount += 3;
+        searchDoctors(); // Trigger the search function to fetch more doctors
+      } else {
+        alert('You need to login to view all doctors.');
+      }
+    }
+
+    function openLocation(location) {
+      window.open(location, '_blank');  
+    }
+
+    function searchDoctorsByName() {
+  var doctorName = document.querySelector('#doctorSearch').value;
+
+  // Check if the length of the entered name is greater than a threshold (e.g., 3 characters)
+  if (doctorName.length > 3) {
+    // Fetch API to send the selected disease, region, and doctor name to the server
+    fetch('search.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: '&doctorName=' + doctorName,
+    })
+    .then(response => response.text())
+    .then(data => {
+      // Update the doctor list container with the response from the server
+      document.getElementById('doctorsContainer').innerHTML = data;
+      handleDoctorDisplay(); // Apply the same condition for displaying doctors
+    })
+    .catch(error => console.error('Error:', error));
+  } else {
+    // If the entered name is too short, clear the doctor list container
+       
+    document.getElementById('doctorsContainer').innerHTML = '';
+  }
+}
+
+function handleDoctorDisplay() {
+  if (totalDoctorsCount > displayedDoctorsCount && isLoggedIn) {
+    document.getElementById('viewMoreBtn').style.display = 'block';
+  } 
+
+  var doctors = document.querySelectorAll('.doctor-box');
+  for (var i = 0; i < doctors.length; i++) {
+    if (i < displayedDoctorsCount) {
+      doctors[i].style.display = 'flex';
+    } else {
+      doctors[i].style.display = 'none';
+    }
+  }
+}
+
+
+    function updateTotalDoctors() {
+      var totalDoctors = document.querySelectorAll('.doctor-box').length;
+      document.getElementById('totalDoctors').textContent = 'Total Doctors: ' + totalDoctors;
+    }
+
+    // Functions for top bar buttons
+    function clientLogin() {
+      window.location.href = "loginclient.html";
+    }
+
+    function doctorlogin() {
+      window.location.href = "logindoctor.html";
+    } 
+
+    function Signup() {
+      window.location.href = "signup.html";
+    }
+
+    // Top bar
+    var prevScrollPos = window.pageYOffset;
+
+    window.onscroll = function() {
+      var currentScrollPos = window.pageYOffset;
+
+      if (prevScrollPos > currentScrollPos) {
+        document.getElementById("topBar").classList.remove("hidden");
+      } else {
+        document.getElementById("topBar").classList.add("hidden");
+      }
+
+      prevScrollPos = currentScrollPos;
+    }
+  </script>
+
+</body>
+</html>

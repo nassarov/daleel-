@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="loginstyle.css">
+    <title>Login</title>
+</head>
+<script>
+    // Simulate a login process
+    function loginUser() {
+      // Perform your login logic here
+  
+      // After successful login
+      sessionStorage.setItem('isLoggedIn', true);
+  
+      // Redirect to main2.html
+      window.location.replace('main2.html');
+    }
+  </script>
+<body>
+    <form action="loginclient.php" method="post" onsubmit="loginUser()">
+        <h1>Login</h1>
+        <h4>Hello!</h4>
+        <input type="email" name="email" placeholder="Email" />
+        <input type="password" name="password" placeholder="Password" />
+        <button type="submit">Login</button>
+    
+        <a href="signup.html">Don't have an account? Create one now!</a> 
+    </form>
+    
+</body>
+</html>

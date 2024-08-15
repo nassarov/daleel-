@@ -1,0 +1,244 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  margin: 0;
+  background-color: #93bae4;
+}
+
+.top-bar {
+        display: flex;
+        justify-content: flex-end;
+        background-image: url('/images/back.png');
+        background-size: cover; 
+        background-position: center; 
+        background-size: contain;
+        padding: 10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transition: transform 0.3s; /* Add a smooth transition effect */
+        z-index: 2;
+    }
+
+    .top-bar.hidden {
+        transform: translateY(-100%); /* Hide the top bar by moving it up */
+    }
+
+
+
+.top-bar button {
+  background:white;
+  border: 1px solid #3498db;
+  border-radius: 8px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  color:#555;
+  margin-right: 10px;
+  transition: color 0.3s ease;
+}
+
+.top-bar button:hover {
+  border: 1px solid #3498db;
+  border-radius: 8px;
+  color:white;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  direction: ltr;
+}
+
+.search-dropdown, .location-dropdown {
+position: relative;
+display: inline-block;
+margin-right: 15px;
+z-index: 1; /* Set a lower z-index for the dropdowns */
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #3498db;
+  font-size: 24px;
+}
+
+.search-dropdown select {
+  padding: 15px;
+  border: 1px solid #3498db;
+  border-radius: 8px;
+  font-size: 20px;
+  text-align: center;
+  background-color: #fff;
+  color: #555;
+  width: 350px;
+}
+
+.location-dropdown select {
+  padding: 15px;
+  border: 1px solid #3498db;
+  border-radius: 8px;
+  font-size: 20px;
+  width: fit-content;
+  text-align: center;
+  background-color: #fff;
+  color: #555;
+}
+
+.search-dropdown select option, .location-dropdown select option {
+  background-color: #ecf0f1;
+  padding: 15px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  text-transform: capitalize; /* Capitalize the first letter */
+}
+
+.search-dropdown select option:hover {
+  background-color: #bdc3c7;
+}
+
+button {
+  padding: 15px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.doctor-list-container {
+  width: 75%;
+  margin-top: 20px;
+}
+
+.doctor-box {
+  background-color: #fff;
+  border: 3px solid #3498db;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.location-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #3498db;
+  
+}
+.location-button:hover{
+  background:#3498db ;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+}
+
+.doctor-image-container {
+  border: 3px solid #3498db;
+  width: 100px; 
+  height: 100px; 
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.doctor-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.doctor-box {
+  display: flex;
+  align-items: center;
+  border: 3px solid #3498db;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.doctor-info {
+  flex-grow: 1;
+}
+
+#doctorSearch {
+  margin-top: 100px;
+margin-bottom: 50px; 
+padding: 10px;
+font-size: 20px;
+border: 2px solid #3498db;
+border-radius: 8px;
+width: 400px;
+box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+
+}
+.doctor-box:hover {
+  transform: scale(1.02); 
+  font-size: larger;
+  font-weight: 100px;
+  .doctor-image-container{
+    border: 5px solid #3498db;
+  }
+  
+}
+
+.No{
+  font-size: 30px;
+  font-weight: bold;
+  font-stretch: condensed;
+}
+
+.Total{
+  font-size: 30px;
+  font-weight: bold;
+  font-stretch: condensed;
+}
+
+@media screen and (max-width: 768px) {
+.container {
+flex-direction: column;
+align-items: stretch;
+}
+
+.top-bar {
+justify-content: center;
+}
+
+.top-bar button {
+margin-right: 0;
+margin-bottom: 5px;
+}
+
+.search-dropdown select,
+.location-dropdown select,
+#doctorSearch {
+width: 100%; 
+}
+
+.doctor-list-container {
+width: 100%; 
+}
+}

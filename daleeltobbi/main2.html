@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="main.css">
+  <title>Daleel طبي</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    #viewMoreBtn {
+      display: none;
+    }
+    .top-bar h3 {
+      color: #fff;
+      font-family: 'Arial';
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 2px;
+      width: 100%;
+      font-size: 35px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar" id="topBar">
+    <h3>WELCOME </h3>
+  </div>
+
+  <div>  
+    <input type="text" id="doctorSearch" placeholder="Search by Doctor Name" oninput="searchDoctorsByName()">
+  </div>
+
+  <form id="searchForm" method="post">
+    <div class="container">
+      <div class="search-dropdown">
+        <span class="icon">🩺</span>
+        <select id="diseaseDropdown" name="disease">
+          <option value="" selected>What Are You Looking For</option>
+          <option value="Heart Disease">Heart Diseases</option>
+          <option value="Orthopedic">Orthopedic Doctor</option>
+          <option value="Dentist">Dentist </option>
+          <option value="Respiratory"> Respiratory Diseases </option>
+          <option value="Dermatology">Dermatology </option>
+          <option value="Ear,Nose and Throat Doctor"> Ear,Nose and Throat Doctor</option>
+          <option value="General Medicine">General Medicine </option>
+          <option value="Psychiatry">Psychiatry</option>
+        </select>
+      </div>
+
+      <div class="location-dropdown">
+        <select id="regionDropdown" name="region">
+          <option value="" selected> Choose Your Region</option>
+          <option value="Bekaa">Bekaa</option>
+          <option value="Beirut">Beirut</option>
+          <option value="South">South</option>
+        </select>
+      </div>
+
+      <div class="search-button">
+        <button type="submit" onclick="searchDoctors()">Search For Doctors 🔍</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Displayed Doctors -->
+  <div id="doctorsContainer" class="doctor-list-container">
+    <!-- Doctors will be displayed here -->
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Check if the user is authenticated
+      var isLoggedIn = sessionStorage.getItem('isLoggedIn');
+
+      if (!isLoggedIn) {
+        // If not authenticated, redirect to the main page
+        window.location.replace('index.html');
+      }
+    });
+</script>
+  <script>
+   
+    document.getElementById('searchForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      searchDoctors();
+    });
+
+    function searchDoctors() {
+
+
+      var disease = document.querySelector('#diseaseDropdown').value;
+      var region = document.querySelector('#regionDropdown').value;
+
+      // AJAX request to send the selected disease and region to the server
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        // Update the doctor list container with the response from the server
+        document.getElementById('doctorsContainer').innerHTML = xhr.responseText;
+
+        // Show or hide the "View More" button based on the total count
+        if (totalDoctorsCount > displayedDoctorsCount) {
+          document.getElementById('viewMoreBtn').style.display = 'block';
+        } else {
+          document.getElementById('viewMoreBtn').style.display = 'none';
+        }
+      };
+      xhr.open('POST', 'search.php', true);
+      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      xhr.send('disease=' + disease + '&region=' + region);
+    }
+
+    function viewMore() {
+      // Increase the displayed count by a certain number (e.g., 3)
+      displayedDoctorsCount += 3;
+      searchDoctors(); // Trigger the search function to fetch more doctors
+    }
+
+    function openLocation(location) {
+      window.open(location, '_blank');  
+    }
+
+    function searchDoctors() {
+  var disease = document.querySelector('#diseaseDropdown').value;
+  var region = document.querySelector('#regionDropdown').value;
+
+  // Fetch API to send the selected disease and region to the server
+  fetch('search.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'disease=' + disease + '&region=' + region,
+  })
+  .then(response => response.text())
+  .then(data => {
+    // Update the doctor list container with the response from the server
+    document.getElementById('doctorsContainer').innerHTML = data;
+
+    // Show or hide the "View More" button based on the total count
+    if (totalDoctorsCount > displayedDoctorsCount) {
+      document.getElementById('viewMoreBtn').style.display = 'block';
+    } else {
+      document.getElementById('viewMoreBtn').style.display = 'none';
+    }
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+
+
+
+function searchDoctorsByName() {
+  var doctorName = document.querySelector('#doctorSearch').value;
+
+  // Check if the length of the entered name is greater than a threshold (e.g., 3 characters)
+  if (doctorName.length > 3) {
+    // Fetch API to send the selected disease, region, and doctor name to the server
+    fetch('search.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: '&doctorName=' + doctorName,
+    })
+    .then(response => response.text())
+    .then(data => {
+      // Update the doctor list container with the response from the server
+      document.getElementById('doctorsContainer').innerHTML = data;
+    })
+    .catch(error => console.error('Error:', error));
+  } else {
+    // If the entered name is too short, clear the doctor list container
+    document.getElementById('doctorsContainer').innerHTML = '';
+  }
+}
+
+    function updateTotalDoctors() {
+      var totalDoctors = document.querySelectorAll('.doctor-box').length;
+      document.getElementById('totalDoctors').textContent = 'Total Doctors: ' + totalDoctors;
+    }
+
+    // Functions for top bar buttons
+   
+
+    //Top bar
+    var prevScrollPos = window.pageYOffset;
+
+    window.onscroll = function() {
+      var currentScrollPos = window.pageYOffset;
+
+      if (prevScrollPos > currentScrollPos) {
+        document.getElementById("topBar").classList.remove("hidden");
+      } else {
+        document.getElementById("topBar").classList.add("hidden");
+      }
+
+      prevScrollPos = currentScrollPos;
+    }
+  </script>
+
+</body>
+</html>
